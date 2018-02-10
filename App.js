@@ -76,15 +76,43 @@ export default class App extends React.Component {
       case 'number':
         return this._handleNumberInput(input)
       case 'string':
-        return this.handleStringInput(input)
+        return this._handleSymbolInput(input)
     }
   }
 
   _handleNumberInput(num) {
-    let inputValue = (this.state.inputValue * 10)+ num
+    let inputValue = (this.state.inputValue * 10) + num
 
     this.setState({
       inputValue: inputValue
-    })
+    });
+  }
+
+  _handleSymbolInput(str) {
+    switch(str) {
+      case '/':
+      case '*':
+      case '+':
+      case '-':
+        this.setState({
+          selectedSymbol: str,
+          prevInputValue: this.state.inputValue,
+          inputValue: 0
+        });
+        break;
+      case '=':
+        let symbol = this.state.selectedSymbol,
+            inputValue = this.state.inputValue,
+            prevInputValue = this.state.prevInputValue
+
+        if(!str) { return; }
+
+        this.setState({
+          prevInputValue: 0,
+          inputValue: eval(prevInputValue + symbol + inputValue),
+          selectedSymbol: null
+        });
+        break;
+    }
   }
 }
