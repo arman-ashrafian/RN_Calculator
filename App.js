@@ -7,6 +7,7 @@ import {
 
 import Style from './styles/style';
 import InputButton from './components/inputButton';
+import ClearButton from './components/clearButton'
 
 // Define the input buttons that will be displayed in the calculator.
 const inputButtons = [
@@ -15,7 +16,6 @@ const inputButtons = [
   [7, 8, 9, '-'],
   [0, '.', '=', '+']
 ];
-
 
 export default class App extends React.Component {
 
@@ -35,6 +35,11 @@ export default class App extends React.Component {
         <View style={Style.displayContainer}>
           <Text style={Style.displayText}>{this.state.inputValue}</Text>
         </View>
+
+        <View style={Style.clearButtonContainer}>
+          <ClearButton onPress={this._onClearButtonPressed().bind(this)}/>
+        </View>
+
         <View style={Style.inputContainer}>
           {this._renderInputButtons()}
         </View>
@@ -113,6 +118,16 @@ export default class App extends React.Component {
           selectedSymbol: null
         });
         break;
+    }
+  }
+
+  _onClearButtonPressed() {
+    return () => {
+      this.setState({
+        prevInputValue: 0,
+        inputValue: 0,
+        selectedSymbol: null
+      })
     }
   }
 }
